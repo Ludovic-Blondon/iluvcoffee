@@ -1,17 +1,17 @@
-import { Controller, Get, Param, Post, Patch, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Patch, Delete, Query, HttpCode } from '@nestjs/common';
 import { Body } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 
 @Controller('coffees')
 export class CoffeesController {
     constructor(private readonly coffeesService: CoffeesService) { }
 
     @Get()
-    findAll(@Query() paginationQuery) {
-        // const { limit, offset } = paginationQuery;
-        return this.coffeesService.findAll();
+    findAll(@Query() paginationQuery: PaginationQueryDto) {
+        return this.coffeesService.findAll(paginationQuery);
     }
 
     @Get(':id')
@@ -21,7 +21,6 @@ export class CoffeesController {
 
     @Post()
     create(@Body() createCoffeeDto: CreateCoffeeDto) {
-        console.log(createCoffeeDto instanceof CreateCoffeeDto);
         return this.coffeesService.create(createCoffeeDto);
     }
 
@@ -33,5 +32,12 @@ export class CoffeesController {
     @Delete(':id')
     remove(@Param('id') id: string) {
         return this.coffeesService.remove(id);
+    }
+
+    @Post(':id/recommend')
+    @HttpCode(202)
+    async recommendCoffee(@Param('id') id: string) {
+        const coffee = await this.coffeesService.findOne(id);
+        return this.coffeesService.recommendCoffee(coffee);
     }
 }
