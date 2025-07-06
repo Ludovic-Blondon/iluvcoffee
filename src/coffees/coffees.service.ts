@@ -96,6 +96,7 @@ export class CoffeesService {
             recommendEvent.type = 'coffee';
             recommendEvent.payload = { coffeeId: coffee.id };
             await queryRunner.manager.save(Event, recommendEvent);
+            await queryRunner.manager.save(Coffee, coffee);
             await queryRunner.commitTransaction();
         } catch (error) {
             await queryRunner.rollbackTransaction();

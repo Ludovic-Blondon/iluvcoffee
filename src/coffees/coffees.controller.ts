@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Patch, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Patch, Delete, Query, HttpCode } from '@nestjs/common';
 import { Body } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
@@ -32,5 +32,12 @@ export class CoffeesController {
     @Delete(':id')
     remove(@Param('id') id: string) {
         return this.coffeesService.remove(id);
+    }
+
+    @Post(':id/recommend')
+    @HttpCode(202)
+    async recommendCoffee(@Param('id') id: string) {
+        const coffee = await this.coffeesService.findOne(id);
+        return this.coffeesService.recommendCoffee(coffee);
     }
 }
