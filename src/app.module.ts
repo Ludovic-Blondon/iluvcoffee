@@ -5,11 +5,13 @@ import { CoffeesModule } from './coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { validateEnv } from './config/env.validation';
+import appConfig from './config/app.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       validate: validateEnv,
+      load: [appConfig],
     }),
 
     CoffeesModule,
