@@ -12,6 +12,7 @@ import appConfig from './config/app.config';
     ConfigModule.forRoot({
       validate: validateEnv,
       load: [appConfig],
+      isGlobal: true,
     }),
 
     CoffeesModule,

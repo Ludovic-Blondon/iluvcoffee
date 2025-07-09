@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CoffeesController } from './coffees.controller';
 import { CoffeesService } from './coffees.service';
+import { ConfigService } from '@nestjs/config';
 
 describe('CoffeesController', () => {
   let controller: CoffeesController;
@@ -12,6 +13,12 @@ describe('CoffeesController', () => {
         {
           provide: CoffeesService,
           useValue: {}, // 👈 mock du service
+        },
+        {
+          provide: ConfigService,
+          useValue: {
+            get: jest.fn(),
+          },
         },
       ],
     }).compile();

@@ -7,6 +7,7 @@ export const envSchema = z.object({
     DATABASE_USER: z.string(),
     DATABASE_PASSWORD: z.string(),
     DATABASE_NAME: z.string(),
+    API_KEY: z.string(),
 });
 
 export function validateEnv(config: Record<string, unknown>) {
