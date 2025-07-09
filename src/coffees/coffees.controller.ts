@@ -11,7 +11,6 @@ import { ZodValidationPipe } from '../common/zod.validation.pipe';
 export class CoffeesController {
     constructor(private readonly coffeesService: CoffeesService) { }
 
-    @Public()
     @Get()
     findAll(@Query() paginationQuery: PaginationQueryDto) {
         return this.coffeesService.findAll(paginationQuery);
