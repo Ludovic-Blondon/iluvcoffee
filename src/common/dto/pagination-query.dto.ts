@@ -1,14 +1,16 @@
-import { Type } from "class-transformer";
-import { IsOptional, IsPositive } from "class-validator";
+import { z } from 'zod';
 
-export class PaginationQueryDto {
-    @IsOptional()
-    @IsPositive()
-    @Type(() => Number)
-    limit: number;
+export const paginationQuerySchema = z.object({
+    limit: z
+        .number()
+        .int()
+        .positive()
+        .optional(),
+    offset: z
+        .number()
+        .int()
+        .positive()
+        .optional(),
+});
 
-    @IsOptional()
-    @IsPositive()
-    @Type(() => Number)
-    offset: number;
-}
+export type PaginationQueryDto = z.infer<typeof paginationQuerySchema>;
