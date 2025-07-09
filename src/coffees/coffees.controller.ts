@@ -5,7 +5,7 @@ import { CreateCoffeeDto, createCoffeeSchema } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto, updateCoffeeSchema } from './dto/update-coffee.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { Public } from '../common/decorators/public.decorator';
-import { ZodValidationPipe } from 'src/common/zod.validation.pipe';
+import { ZodValidationPipe } from '../common/zod.validation.pipe';
 
 @Controller('coffees')
 export class CoffeesController {
