@@ -1,12 +1,11 @@
-import { IsString } from "class-validator";
+import { z } from 'zod';
 
-export class CreateCoffeeDto {
-    @IsString()
-    readonly title: string;
+export const createCoffeeSchema = z
+    .object({
+        title: z.string(),
+        brand: z.string(),
+        flavors: z.array(z.string()).optional().default([]),
+    })
+    .required();
 
-    @IsString()
-    readonly brand: string;
-
-    @IsString({ each: true })
-    readonly flavors: string[];
-}
+export type CreateCoffeeDto = z.infer<typeof createCoffeeSchema>;
