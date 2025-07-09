@@ -5,6 +5,7 @@ import { CoffeesModule } from './coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { validateEnv } from './config/env.validation';
+import { CommonModule } from './common/common.module';
 import appConfig from './config/app.config';
 
 @Module({
@@ -12,9 +13,8 @@ import appConfig from './config/app.config';
     ConfigModule.forRoot({
       validate: validateEnv,
       load: [appConfig],
-      isGlobal: true,
     }),
-
+    CommonModule,
     CoffeesModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -25,7 +25,8 @@ import appConfig from './config/app.config';
       database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
-    })],
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

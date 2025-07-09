@@ -1,16 +1,16 @@
-import { Controller, Get, Param, Post, Patch, Delete, Query, HttpCode, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Patch, Delete, Query, HttpCode, UseGuards, SetMetadata } from '@nestjs/common';
 import { Body } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import { ApiKeyGuard } from '../common/guards/api-key.guard';
+import { Public } from '../common/decorators/public.decorator';
 
-@UseGuards(ApiKeyGuard)
 @Controller('coffees')
 export class CoffeesController {
     constructor(private readonly coffeesService: CoffeesService) { }
 
+    @Public()
     @Get()
     findAll(@Query() paginationQuery: PaginationQueryDto) {
         return this.coffeesService.findAll(paginationQuery);
