@@ -1,11 +1,16 @@
-import { Controller, Get, Param, Post, Patch, Delete, Query, HttpCode, UseGuards, SetMetadata } from '@nestjs/common';
+import { Controller, Get, Param, Post, Patch, Delete, Query, HttpCode } from '@nestjs/common';
 import { Body } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
-import { CreateCoffeeDto, createCoffeeSchema } from './schemas/create-coffee.zod';
-import { UpdateCoffeeDto, updateCoffeeSchema } from './schemas/update-coffee.zod';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { ZodValidationPipe } from '../common/pipes/zod.validation.pipe';
-import { coffeeParamSchema } from './schemas/coffee.param.zod';
+import {
+    coffeeParamSchema,
+    createCoffeeSchema,
+    updateCoffeeSchema,
+    type CreateCoffeeDto,
+    type UpdateCoffeeDto,
+} from './schemas';
+
 
 @Controller('coffees')
 export class CoffeesController {
