@@ -31,6 +31,18 @@
 $ npm install
 ```
 
+## Run Database developpment with Docker
+
+You can configure the docker file /docker-compose.yml
+
+```bash
+$ npm run docker:up
+
+# kill docker
+$ npm run docker:down
+```
+
+
 ## Compile and run the project
 
 ```bash
