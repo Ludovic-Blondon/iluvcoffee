@@ -8,11 +8,11 @@ export const updateCoffeeSchema = createCoffeeSchema.partial().refine(data => Ob
 
 export class UpdateCoffeeDto extends createZodDto(updateCoffeeSchema) {
     @ApiProperty({ example: 'Café noir' })
-    title: string;
+    title?: string;
 
     @ApiProperty({ example: 'Nest Brand' })
-    brand: string;
+    brand?: string;
 
     @ApiProperty({ example: ['chocolat', 'vanille'], required: false, type: [String] })
-    flavors: string[] = [];
+    flavors?: string[] = [];
 }
