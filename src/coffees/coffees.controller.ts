@@ -1,9 +1,15 @@
 import { Controller, Get, Param, Post, Patch, Delete, Query, HttpCode } from '@nestjs/common';
 import { Body } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
-import { CreateCoffeeDto } from './dto/create-coffee.dto';
-import { UpdateCoffeeDto } from './dto/update-coffee.dto';
-import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { PaginationQueryDto } from '../common/schemas/pagination-query.zod';
+import { ZodValidationPipe } from '../common/pipes/zod.validation.pipe';
+import {
+    coffeeParamSchema,
+    createCoffeeSchema,
+    updateCoffeeSchema,
+    type CreateCoffeeDto,
+    type UpdateCoffeeDto,
+} from './schemas';
 
 @Controller('coffees')
 export class CoffeesController {
@@ -15,28 +21,31 @@ export class CoffeesController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
+    findOne(@Param('id', new ZodValidationPipe(coffeeParamSchema)) id: number) {
         return this.coffeesService.findOne(id);
     }
 
     @Post()
-    create(@Body() createCoffeeDto: CreateCoffeeDto) {
+    create(@Body(new ZodValidationPipe(createCoffeeSchema)) createCoffeeDto: CreateCoffeeDto) {
         return this.coffeesService.create(createCoffeeDto);
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+    update(
+        @Param('id', new ZodValidationPipe(coffeeParamSchema)) id: number,
+        @Body(new ZodValidationPipe(updateCoffeeSchema)) updateCoffeeDto: UpdateCoffeeDto
+    ) {
         return this.coffeesService.update(id, updateCoffeeDto);
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
+    remove(@Param('id', new ZodValidationPipe(coffeeParamSchema)) id: number) {
         return this.coffeesService.remove(id);
     }
 
     @Post(':id/recommend')
     @HttpCode(202)
-    async recommendCoffee(@Param('id') id: string) {
+    async recommendCoffee(@Param('id', new ZodValidationPipe(coffeeParamSchema)) id: number) {
         const coffee = await this.coffeesService.findOne(id);
         return this.coffeesService.recommendCoffee(coffee);
     }

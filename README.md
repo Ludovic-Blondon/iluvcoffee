@@ -31,6 +31,19 @@
 $ npm install
 ```
 
+## Run Database developpment with Docker
+
+You can configure the docker file /docker-compose.yml
+
+```bash
+# up docker postgres container
+$ npm run docker:up
+
+# kill docker
+$ npm run docker:down
+```
+
+
 ## Compile and run the project
 
 ```bash
@@ -86,12 +99,6 @@ Check out a few resources that may come in handy when working with NestJS:
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
