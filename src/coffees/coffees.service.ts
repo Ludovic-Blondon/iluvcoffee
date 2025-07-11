@@ -5,7 +5,7 @@ import { DataSource, Repository } from 'typeorm';
 import { CreateCoffeeDto } from './schemas/create-coffee.zod';
 import { UpdateCoffeeDto } from './schemas/update-coffee.zod';
 import { Flavor } from './entities/flavor.entity';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { PaginationQueryDto } from '../common/schemas/pagination-query.zod';
 import { Event } from '../events/entities/event.entity';
 
 @Injectable()

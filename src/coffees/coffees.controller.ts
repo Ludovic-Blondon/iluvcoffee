@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Post, Patch, Delete, Query, HttpCode } from '@nestjs/common';
 import { Body } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
-import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { PaginationQueryDto } from '../common/schemas/pagination-query.zod';
 import { ZodValidationPipe } from '../common/pipes/zod.validation.pipe';
 import {
     coffeeParamSchema,
