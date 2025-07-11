@@ -11,7 +11,6 @@ import {
     type UpdateCoffeeDto,
 } from './schemas';
 
-
 @Controller('coffees')
 export class CoffeesController {
     constructor(private readonly coffeesService: CoffeesService) { }
