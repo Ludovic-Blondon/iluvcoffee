@@ -27,13 +27,13 @@ export class CoffeesController {
     }
 
     @Post()
-    @ApiBody({ type: CreateCoffeeDto }) // Swagger doc
+    @ApiBody({ type: CreateCoffeeDto })
     create(@Body(new ZodValidationPipe(createCoffeeSchema)) createCoffeeDto: CreateCoffeeDto) {
         return this.coffeesService.create(createCoffeeDto);
     }
 
     @Patch(':id')
-    @ApiBody({ type: UpdateCoffeeDto }) // Swagger doc
+    @ApiBody({ type: UpdateCoffeeDto })
     update(
         @Param('id', new ZodValidationPipe(coffeeParamSchema)) id: number,
         @Body(new ZodValidationPipe(updateCoffeeSchema)) updateCoffeeDto: UpdateCoffeeDto
