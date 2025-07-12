@@ -1,7 +1,9 @@
-import { z } from 'zod';
+import { IsInt, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 
-export const coffeeParamSchema = z.string().refine(id => !isNaN(Number(id)), {
-    message: 'ID must be a number',
-}).transform(val => Number(val));
-
-export type CoffeeParamDto = z.infer<typeof coffeeParamSchema>;
+export class CoffeeParamDto {
+    @Type(() => Number)
+    @IsInt()
+    @Min(1)
+    id: number;
+}

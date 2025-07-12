@@ -3,14 +3,7 @@ import { Body } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { CoffeesService } from './coffees.service';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import { ZodValidationPipe } from '../common/pipes/zod.validation.pipe';
-import {
-    coffeeParamSchema,
-    createCoffeeSchema,
-    updateCoffeeSchema,
-    UpdateCoffeeDto,
-    CreateCoffeeDto,
-} from './dto';
+import { UpdateCoffeeDto, CreateCoffeeDto, CoffeeParamDto } from './dto';
 
 @Controller('coffees')
 export class CoffeesController {
@@ -22,34 +15,34 @@ export class CoffeesController {
     }
 
     @Get(':id')
-    findOne(@Param('id', new ZodValidationPipe(coffeeParamSchema)) id: number) {
-        return this.coffeesService.findOne(id);
+    findOne(@Param() params: CoffeeParamDto) {
+        return this.coffeesService.findOne(params.id);
     }
 
     @Post()
     @ApiBody({ type: CreateCoffeeDto })
-    create(@Body(new ZodValidationPipe(createCoffeeSchema)) createCoffeeDto: CreateCoffeeDto) {
+    create(@Body() createCoffeeDto: CreateCoffeeDto) {
         return this.coffeesService.create(createCoffeeDto);
     }
 
     @Patch(':id')
     @ApiBody({ type: UpdateCoffeeDto })
     update(
-        @Param('id', new ZodValidationPipe(coffeeParamSchema)) id: number,
-        @Body(new ZodValidationPipe(updateCoffeeSchema)) updateCoffeeDto: UpdateCoffeeDto
+        @Param() params: CoffeeParamDto,
+        @Body() updateCoffeeDto: UpdateCoffeeDto
     ) {
-        return this.coffeesService.update(id, updateCoffeeDto);
+        return this.coffeesService.update(params.id, updateCoffeeDto);
     }
 
     @Delete(':id')
-    remove(@Param('id', new ZodValidationPipe(coffeeParamSchema)) id: number) {
-        return this.coffeesService.remove(id);
+    remove(@Param() params: CoffeeParamDto) {
+        return this.coffeesService.remove(params.id);
     }
 
     @Post(':id/recommend')
     @HttpCode(202)
-    async recommendCoffee(@Param('id', new ZodValidationPipe(coffeeParamSchema)) id: number) {
-        const coffee = await this.coffeesService.findOne(id);
+    async recommendCoffee(@Param() params: CoffeeParamDto) {
+        const coffee = await this.coffeesService.findOne(params.id);
         return this.coffeesService.recommendCoffee(coffee);
     }
 }
