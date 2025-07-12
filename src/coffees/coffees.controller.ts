@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Patch, Delete, Query, HttpCode } from '@nestjs/common';
+import { Controller, Get, Param, Post, Patch, Delete, Query, HttpCode, ParseIntPipe } from '@nestjs/common';
 import { Body } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { CoffeesService } from './coffees.service';
@@ -15,8 +15,8 @@ export class CoffeesController {
     }
 
     @Get(':id')
-    findOne(@Param() params: CoffeeParamDto) {
-        return this.coffeesService.findOne(params.id);
+    findOne(@Param('id', ParseIntPipe) id: number) {
+        return this.coffeesService.findOne(id);
     }
 
     @Post()
@@ -26,23 +26,22 @@ export class CoffeesController {
     }
 
     @Patch(':id')
-    @ApiBody({ type: UpdateCoffeeDto })
     update(
-        @Param() params: CoffeeParamDto,
+        @Param('id', ParseIntPipe) id: number,
         @Body() updateCoffeeDto: UpdateCoffeeDto
     ) {
-        return this.coffeesService.update(params.id, updateCoffeeDto);
+        return this.coffeesService.update(id, updateCoffeeDto);
     }
 
     @Delete(':id')
-    remove(@Param() params: CoffeeParamDto) {
-        return this.coffeesService.remove(params.id);
+    remove(@Param('id', ParseIntPipe) id: number) {
+        return this.coffeesService.remove(id);
     }
 
     @Post(':id/recommend')
     @HttpCode(202)
-    async recommendCoffee(@Param() params: CoffeeParamDto) {
-        const coffee = await this.coffeesService.findOne(params.id);
+    async recommendCoffee(@Param('id', ParseIntPipe) id: number) {
+        const coffee = await this.coffeesService.findOne(id);
         return this.coffeesService.recommendCoffee(coffee);
     }
 }
