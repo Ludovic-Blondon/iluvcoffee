@@ -6,7 +6,7 @@ export class CreateCoffeeDto {
     @IsString()
     @MinLength(3)
     @MaxLength(255)
-    title: string;
+    name: string;
 
     @ApiProperty({ example: 'Nest Brand' })
     @IsString()
