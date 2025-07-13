@@ -55,19 +55,25 @@ export class CoffeesService {
     }
 
     async update(id: number, updateCoffeeDto: UpdateCoffeeDto) {
-        const flavors = updateCoffeeDto.flavors && (await Promise.all(
-            updateCoffeeDto.flavors.map(name => this.preloadFlavorByName(name))
-        ));
+        const flavors =
+            updateCoffeeDto.flavors &&
+            (await Promise.all(
+                updateCoffeeDto.flavors.map(name => this.preloadFlavorByName(name)),
+            ));
 
         const existingCoffee = await this.coffeeRepository.preload({
-            id: id,
+            id: +id,
             ...updateCoffeeDto,
             flavors,
         });
+
         if (!existingCoffee) {
             throw new NotFoundException(`Coffee #${id} not found`);
         }
-        return this.coffeeRepository.save(existingCoffee);
+
+        await this.coffeeRepository.save(existingCoffee);
+
+        return this.findOne(existingCoffee.id);
     }
 
     async remove(id: number) {
@@ -75,14 +81,13 @@ export class CoffeesService {
         return this.coffeeRepository.remove(coffee);
     }
 
-    private async preloadFlavorByName(flavorName: string): Promise<Flavor> {
-        const existingFlavor = await this.flavorRepository.findOne({
-            where: { name: flavorName },
-        });
+    private async preloadFlavorByName(name: string): Promise<Flavor> {
+        const existingFlavor = await this.flavorRepository.findOne({ where: { name } });
         if (existingFlavor) {
             return existingFlavor;
         }
-        return this.flavorRepository.create({ name: flavorName });
+
+        return this.flavorRepository.create({ name });
     }
 
     async recommendCoffee(coffee: Coffee) {
