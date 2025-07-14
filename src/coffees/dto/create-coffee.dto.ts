@@ -19,5 +19,5 @@ export class CreateCoffeeDto {
     @IsArray()
     @IsString({ each: true })
     @ArrayUnique()
-    flavors: string[] = [];
+    flavors: string[];
 }
