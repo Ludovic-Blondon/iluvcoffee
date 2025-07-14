@@ -5,6 +5,7 @@ import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { Event } from 'src/events/entities/event.entity';
 
 @Injectable()
 export class CoffeesService {
@@ -54,18 +55,23 @@ export class CoffeesService {
         session.startTransaction();
 
         try {
-            coffee.recommendations++;
             const recommendEvent = new this.eventModel({
                 name: 'recommend_coffee',
                 type: 'coffee',
-                payload: { coffeeId: coffee.id },
+                payload: { coffeeId: coffee._id },
             });
             await recommendEvent.save({ session });
-            await coffee.save({ session });
+
+            await this.coffeeModel.findOneAndUpdate(
+                { _id: coffee._id },
+                { $inc: { recommendations: 1 } },
+                { session }
+            );
 
             await session.commitTransaction();
         } catch (err) {
             await session.abortTransaction();
+            throw err;
         } finally {
             session.endSession();
         }
