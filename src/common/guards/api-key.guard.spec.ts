@@ -17,7 +17,9 @@ describe('ApiKeyGuard', () => {
   };
 
   beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     reflector = mockReflector as any;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     configService = mockConfigService as any;
     guard = new ApiKeyGuard(configService, reflector);
   });

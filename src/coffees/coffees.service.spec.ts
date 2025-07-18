@@ -8,8 +8,12 @@ import { NotFoundException } from '@nestjs/common';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 
-type MockRepository<T extends ObjectLiteral = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
-const createMockRepository = <T extends ObjectLiteral = any>(): MockRepository<T> => ({
+type MockRepository<T extends ObjectLiteral = any> = Partial<
+  Record<keyof Repository<T>, jest.Mock>
+>;
+const createMockRepository = <
+  T extends ObjectLiteral = any,
+>(): MockRepository<T> => ({
   findOne: jest.fn(),
   create: jest.fn(),
   save: jest.fn(),
@@ -61,7 +65,14 @@ describe('CoffeesService', () => {
 
   describe('findAll', () => {
     it('should return an array of coffees', async () => {
-      const coffees = [{ id: 1, name: 'Coffee 1', brand: 'Brand 1', flavors: ['flavor 1', 'flavor 2'] }];
+      const coffees = [
+        {
+          id: 1,
+          name: 'Coffee 1',
+          brand: 'Brand 1',
+          flavors: ['flavor 1', 'flavor 2'],
+        },
+      ];
       coffeeRepository.find!.mockResolvedValue(coffees);
       const result = await service.findAll({});
       expect(result).toEqual(coffees);
@@ -77,16 +88,17 @@ describe('CoffeesService', () => {
         coffeeRepository.findOne!.mockResolvedValue(expectedCoffee);
         const coffee = await service.findOne(coffeeId);
         expect(coffee).toEqual(expectedCoffee);
-
       });
     });
 
     describe('when coffee with id does not exist', () => {
-      it('should throw an error', () => {
+      it('should throw an error', async () => {
         const coffeeId = 99;
         coffeeRepository.findOne!.mockResolvedValue(undefined);
 
-        expect(service.findOne(coffeeId)).rejects.toThrow(NotFoundException);
+        await expect(service.findOne(coffeeId)).rejects.toThrow(
+          NotFoundException,
+        );
       });
     });
   });
@@ -116,16 +128,25 @@ describe('CoffeesService', () => {
         flavors: ['flavor 1', 'flavor 2'],
       };
 
-      coffeeRepository.preload!.mockResolvedValue({ id: coffeeId, ...updateCoffeeDto });
-      coffeeRepository.save!.mockResolvedValue({ id: coffeeId, ...updateCoffeeDto });
-      coffeeRepository.findOne!.mockResolvedValue({ id: coffeeId, ...updateCoffeeDto });
+      coffeeRepository.preload!.mockResolvedValue({
+        id: coffeeId,
+        ...updateCoffeeDto,
+      });
+      coffeeRepository.save!.mockResolvedValue({
+        id: coffeeId,
+        ...updateCoffeeDto,
+      });
+      coffeeRepository.findOne!.mockResolvedValue({
+        id: coffeeId,
+        ...updateCoffeeDto,
+      });
 
       const coffee = await service.update(coffeeId, updateCoffeeDto);
       expect(coffee).toEqual({ id: coffeeId, ...updateCoffeeDto });
     });
 
     describe('when coffee with id does not exist', () => {
-      it('should throw an error', () => {
+      it('should throw an error', async () => {
         const coffeeId = 99;
         const updateCoffeeDto: UpdateCoffeeDto = {
           name: 'Coffee 1',
@@ -133,7 +154,9 @@ describe('CoffeesService', () => {
           flavors: ['flavor 1', 'flavor 2'],
         };
         coffeeRepository.preload!.mockResolvedValue(undefined);
-        expect(service.update(coffeeId, updateCoffeeDto)).rejects.toThrow(NotFoundException);
+        await expect(service.update(coffeeId, updateCoffeeDto)).rejects.toThrow(
+          NotFoundException,
+        );
       });
     });
   });
@@ -147,10 +170,12 @@ describe('CoffeesService', () => {
     });
 
     describe('when coffee with id does not exist', () => {
-      it('should throw an error', () => {
+      it('should throw an error', async () => {
         const coffeeId = 99;
         coffeeRepository.findOne!.mockResolvedValue(undefined);
-        expect(service.remove(coffeeId)).rejects.toThrow(NotFoundException);
+        await expect(service.remove(coffeeId)).rejects.toThrow(
+          NotFoundException,
+        );
       });
     });
   });
@@ -177,7 +202,13 @@ describe('CoffeesService', () => {
     it('should return a coffee', async () => {
       const coffeeId = 1;
       coffeeRepository.findOne!.mockResolvedValue({ id: coffeeId });
-      const result = await service.recommendCoffee({ id: coffeeId, name: 'Coffee 1', brand: 'Brand 1', recommendations: 1, flavors: [] });
+      const result = await service.recommendCoffee({
+        id: coffeeId,
+        name: 'Coffee 1',
+        brand: 'Brand 1',
+        recommendations: 1,
+        flavors: [],
+      });
       expect(result).toEqual(undefined);
     });
   });

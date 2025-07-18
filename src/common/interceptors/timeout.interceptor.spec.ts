@@ -31,8 +31,7 @@ describe('TimeoutInterceptor', () => {
   it('should throw RequestTimeoutException if execution exceeds 3000ms', (done) => {
     const executionContext = {} as ExecutionContext;
     const callHandler: CallHandler = {
-      handle: () =>
-        throwError(() => new TimeoutError),
+      handle: () => throwError(() => new TimeoutError()),
     };
 
     interceptor.intercept(executionContext, callHandler).subscribe({
