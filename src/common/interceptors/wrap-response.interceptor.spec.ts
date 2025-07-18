@@ -1,4 +1,3 @@
-
 import { WrapResponseInterceptor } from './wrap-response.interceptor';
 import { CallHandler, ExecutionContext } from '@nestjs/common';
 import { of } from 'rxjs';
@@ -26,7 +25,7 @@ describe('WrapResponseInterceptor', () => {
       error: () => {
         fail('Should not throw');
         done();
-      }
+      },
     });
   });
 });

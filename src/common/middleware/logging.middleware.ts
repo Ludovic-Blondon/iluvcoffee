@@ -1,8 +1,9 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Request, Response } from 'express';
 
 @Injectable()
 export class LoggingMiddleware implements NestMiddleware {
-  use(_req: any, res: any, next: () => void) {
+  use(_req: Request, res: Response, next: () => void) {
     console.time('Request-response time');
 
     res.on('finish', () => {
